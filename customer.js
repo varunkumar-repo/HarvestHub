@@ -362,7 +362,7 @@ function renderCart() {
         <button class="btn ghost dec">-</button>
         <span class="cart-qty">${item.qty}</span>
         <button class="btn ghost inc">+</button>
-        <button class="btn danger del" title="Remove" aria-label="Remove">&#128465;</button>
+        <button class="btn danger del" title="Remove" aria-label="Remove">Remove</button>
       </div>
     `;
     row.querySelector(".dec").addEventListener("click", () => updateCart(p.id, item.qty - 1));

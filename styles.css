@@ -974,8 +974,9 @@ input::placeholder {
 }
 
 .cart-controls .del {
-  min-width: 34px;
-  padding: 0.28rem 0.45rem;
+  min-width: 58px;
+  padding: 0.24rem 0.45rem;
+  font-size: 0.72rem;
 }
 
 .cart-qty {
@@ -991,13 +992,19 @@ input::placeholder {
 }
 
 .customer-page .profile-menu,
-.customer-page .item-card,
 .customer-page .card-body h3,
 .customer-page .card-body p,
 .customer-page .price,
 .customer-page .chip,
 .customer-page .order-status-chip {
   overflow-wrap: anywhere;
+}
+
+.customer-page #cartView .item-card,
+.customer-page #cartView .item-card h4,
+.customer-page #cartView .item-card p {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 @media (max-width: 960px) {
@@ -1438,7 +1445,7 @@ input::placeholder {
   }
 
   .customer-page #cartView .cart-controls .del {
-    min-width: 28px;
+    min-width: 52px;
   }
 
   .customer-page #cartView .cart-qty {
