@@ -401,6 +401,43 @@ input::placeholder {
   gap: 0.9rem;
 }
 
+.product-sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.category-block {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.category-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.category-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.category-see-all {
+  border: 0;
+  background: transparent;
+  color: #9ce7c5;
+  font: inherit;
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.15rem 0.2rem;
+}
+
+.category-see-all:hover {
+  color: #cbffe8;
+}
+
 .product-card {
   overflow: hidden;
   border-radius: 14px;
@@ -1089,6 +1126,14 @@ input::placeholder {
   .customer-page .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.45rem;
+  }
+
+  .category-title {
+    font-size: 0.95rem;
+  }
+
+  .category-see-all {
+    font-size: 0.75rem;
   }
 
   .customer-page .view-card,

@@ -41,6 +41,7 @@ const refs = {
   editAddressBtn: document.getElementById("editAddressBtn"),
   logoutCustomer: document.getElementById("logoutCustomer")
 };
+const CATEGORY_ORDER = ["Dairy", "Vegetables", "Fruits", "Grains"];
 
 function currency(v) {
   return `Rs ${Number(v || 0).toFixed(0)}`;
@@ -141,6 +142,75 @@ function cartQty(productId) {
   return state.cart.find((item) => item.productId === productId)?.qty || 0;
 }
 
+function buildProductCard(p) {
+  const node = refs.productCardTpl.content.firstElementChild.cloneNode(true);
+  node.querySelector("img").src = p.image;
+  node.querySelector("img").alt = p.name;
+  node.querySelector(".chip").textContent = `${p.category} | Stock ${p.stock}`;
+  node.querySelector("h3").textContent = p.name;
+  node.querySelector(".price").textContent = priceWithUnit(p);
+  const btn = node.querySelector(".add-btn");
+  const qtyControls = node.querySelector(".qty-controls");
+  const qtyValue = node.querySelector(".qty-value");
+  const decBtn = node.querySelector(".dec-btn");
+  const incBtn = node.querySelector(".inc-btn");
+  const qty = cartQty(p.id);
+
+  btn.disabled = p.stock <= 0;
+  btn.textContent = p.stock <= 0 ? "Out of stock" : "Add";
+  btn.addEventListener("click", () => addToCart(p.id));
+  decBtn.addEventListener("click", () => updateCart(p.id, qty - 1));
+  incBtn.addEventListener("click", () => updateCart(p.id, qty + 1));
+
+  if (qty > 0) {
+    btn.style.display = "none";
+    qtyControls.style.display = "flex";
+    qtyValue.textContent = qty.toString();
+    incBtn.disabled = qty >= p.stock;
+  } else {
+    btn.style.display = "inline-block";
+    qtyControls.style.display = "none";
+  }
+  return node;
+}
+
+function createProductsGrid(products) {
+  const grid = document.createElement("div");
+  grid.className = "product-grid";
+  products.forEach((p) => grid.appendChild(buildProductCard(p)));
+  return grid;
+}
+
+function renderGroupedProducts(products) {
+  const grouped = new Map();
+  products.forEach((p) => {
+    const category = p.category || "Other";
+    if (!grouped.has(category)) grouped.set(category, []);
+    grouped.get(category).push(p);
+  });
+
+  const orderedCategories = [...CATEGORY_ORDER, ...[...grouped.keys()].filter((c) => !CATEGORY_ORDER.includes(c))];
+  orderedCategories.forEach((category) => {
+    const categoryProducts = grouped.get(category) || [];
+    if (!categoryProducts.length) return;
+    const block = document.createElement("section");
+    block.className = "category-block";
+    const head = document.createElement("div");
+    head.className = "category-head";
+    head.innerHTML = `
+      <h3 class="category-title">${category}</h3>
+      <button class="category-see-all" type="button" data-category="${category}">See All</button>
+    `;
+    head.querySelector(".category-see-all").addEventListener("click", () => {
+      refs.categoryFilter.value = category;
+      renderProducts();
+    });
+    block.appendChild(head);
+    block.appendChild(createProductsGrid(categoryProducts));
+    refs.productGrid.appendChild(block);
+  });
+}
+
 function renderProducts() {
   refs.productGrid.innerHTML = "";
   const products = filteredProducts();
@@ -148,38 +218,14 @@ function renderProducts() {
     refs.productGrid.innerHTML = "<p>No products found.</p>";
     return;
   }
-  products.forEach((p) => {
-    const node = refs.productCardTpl.content.firstElementChild.cloneNode(true);
-    node.querySelector("img").src = p.image;
-    node.querySelector("img").alt = p.name;
-    node.querySelector(".chip").textContent = `${p.category} | Stock ${p.stock}`;
-    node.querySelector("h3").textContent = p.name;
-    node.querySelector(".price").textContent = priceWithUnit(p);
-    const btn = node.querySelector(".add-btn");
-    const qtyControls = node.querySelector(".qty-controls");
-    const qtyValue = node.querySelector(".qty-value");
-    const decBtn = node.querySelector(".dec-btn");
-    const incBtn = node.querySelector(".inc-btn");
-    const qty = cartQty(p.id);
 
-    btn.disabled = p.stock <= 0;
-    btn.textContent = p.stock <= 0 ? "Out of stock" : "Add";
-    btn.addEventListener("click", () => addToCart(p.id));
-    decBtn.addEventListener("click", () => updateCart(p.id, qty - 1));
-    incBtn.addEventListener("click", () => updateCart(p.id, qty + 1));
-
-    if (qty > 0) {
-      btn.style.display = "none";
-      qtyControls.style.display = "flex";
-      qtyValue.textContent = qty.toString();
-      incBtn.disabled = qty >= p.stock;
-    } else {
-      btn.style.display = "inline-block";
-      qtyControls.style.display = "none";
-    }
-
-    refs.productGrid.appendChild(node);
-  });
+  const query = refs.searchInput.value.trim();
+  const showGrouped = !query && refs.categoryFilter.value === "all";
+  if (showGrouped) {
+    renderGroupedProducts(products);
+    return;
+  }
+  refs.productGrid.appendChild(createProductsGrid(products));
 }
 
 function renderCart() {
