@@ -55,6 +55,18 @@ h1, h2, h3, h4 {
     url("assets/Main-photo.jpg");
 }
 
+.customer-page {
+  background-image:
+    linear-gradient(100deg, rgba(10, 14, 12, 0.6), rgba(10, 14, 12, 0.65)),
+    url("assets/Main-photo.jpg");
+}
+
+.farm-page:not(.customer-page) {
+  background-image:
+    linear-gradient(100deg, rgba(10, 14, 12, 0.6), rgba(10, 14, 12, 0.65)),
+    url("assets/Main-photo.jpg");
+}
+
 
 .overlay {
   position: fixed;
