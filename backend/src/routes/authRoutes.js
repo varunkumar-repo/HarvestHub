@@ -139,22 +139,24 @@ router.post("/forgot-password", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, username, identifier, password } = req.body;
-    const rawIdentifier = (identifier || email || "").trim();
+    const rawIdentifier = (identifier || email || username || "").trim();
     const normalizedIdentifier = rawIdentifier.toLowerCase();
-    const loginEmail = (normalizedIdentifier || (username === "admin" ? "admin@harvesthub.com" : "")).trim();
-    if (!loginEmail || !password) {
+    if (!rawIdentifier || !password) {
       return res.status(400).json({ message: "email/mobile/username and password are required." });
     }
 
+    const isAdminLogin = normalizedIdentifier === "admin" || normalizedIdentifier === "admin@harvesthub.com";
     let user = null;
-    if (loginEmail === "admin@harvesthub.com") {
-      user = await User.findOne({ email: loginEmail });
-    } else if (loginEmail.includes("@")) {
-      user = await User.findOne({ email: loginEmail });
-    } else {
+    if (isAdminLogin) {
+      user = await User.findOne({ email: "admin@harvesthub.com" });
+    } else if (normalizedIdentifier.includes("@")) {
+      user = await User.findOne({ email: normalizedIdentifier });
+    } else if (/^\d{10}$/.test(rawIdentifier)) {
       user = await User.findOne({ mobile: rawIdentifier });
+    } else {
+      user = null;
     }
-    if (!user && loginEmail === "admin@harvesthub.com" && password === "admin123") {
+    if (!user && isAdminLogin && password === "admin123") {
       const passwordHash = await bcrypt.hash("admin123", 10);
       user = await User.create({
         fullName: "HarvestHub Admin",

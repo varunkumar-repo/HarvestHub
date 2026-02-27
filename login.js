@@ -126,6 +126,10 @@ if (adminForm) {
     const data = new FormData(adminForm);
     const username = data.get("username").trim();
     const password = data.get("password");
+    if (!username || !password) {
+      alert("Please enter username and password.");
+      return;
+    }
     try {
       const payload = await apiFetch("/auth/login", {
         method: "POST",
@@ -134,7 +138,7 @@ if (adminForm) {
       setSession(payload.accessToken, payload.user, payload.refreshToken, payload.expiresIn);
       window.location.href = "admin.html";
     } catch (error) {
-      alert(error.message || "Invalid admin credentials.");
+      alert("Invalid admin username or password.");
     }
   });
 }
