@@ -941,6 +941,55 @@ input::placeholder {
   border: 1px solid #50685d;
 }
 
+.cart-item {
+  padding: 0.62rem 0.72rem;
+  align-items: center;
+}
+
+.cart-item .cart-meta {
+  min-width: 0;
+}
+
+.cart-item .cart-meta h4 {
+  margin: 0 0 0.1rem;
+  font-size: 0.94rem;
+  line-height: 1.2;
+}
+
+.cart-item .cart-meta p {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.cart-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  flex-shrink: 0;
+}
+
+.cart-controls .btn {
+  min-width: 30px;
+  padding: 0.28rem 0.42rem;
+}
+
+.cart-controls .del {
+  min-width: 34px;
+  padding: 0.28rem 0.45rem;
+}
+
+.cart-qty {
+  min-width: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #ebfff5;
+  padding: 0.16rem 0.28rem;
+  border: 1px solid #5f7d70;
+  border-radius: 8px;
+  background: #2b3f37;
+}
+
 .customer-page .profile-menu,
 .customer-page .item-card,
 .customer-page .card-body h3,
@@ -1217,6 +1266,13 @@ input::placeholder {
     align-items: flex-start;
   }
 
+  .customer-page #cartView .item-card.cart-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
   .actions {
     width: 100%;
     flex-wrap: wrap;
@@ -1225,6 +1281,10 @@ input::placeholder {
   .actions .btn,
   .actions select {
     width: 100%;
+  }
+
+  .customer-page #cartView .cart-controls .btn {
+    width: auto;
   }
 
   .product-form {
@@ -1352,6 +1412,39 @@ input::placeholder {
     min-width: 24px;
     padding: 0.2rem 0.25rem;
     font-size: 0.78rem;
+  }
+
+  .customer-page #cartView .cart-item {
+    padding: 0.54rem 0.6rem;
+  }
+
+  .customer-page #cartView .cart-meta h4 {
+    font-size: 0.88rem;
+  }
+
+  .customer-page #cartView .cart-meta p {
+    font-size: 0.76rem;
+  }
+
+  .customer-page #cartView .cart-controls {
+    gap: 0.24rem;
+  }
+
+  .customer-page #cartView .cart-controls .btn {
+    min-width: 24px;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.72rem;
+    width: auto;
+  }
+
+  .customer-page #cartView .cart-controls .del {
+    min-width: 28px;
+  }
+
+  .customer-page #cartView .cart-qty {
+    min-width: 18px;
+    font-size: 0.72rem;
+    padding: 0.12rem 0.2rem;
   }
 
   .price-row {

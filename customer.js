@@ -83,6 +83,7 @@ const refs = {
   logoutCustomer: document.getElementById("logoutCustomer")
 };
 const CATEGORY_ORDER = ["Dairy", "Vegetables", "Fruits", "Grains"];
+let carouselScrollByCategory = {};
 
 function currency(v) {
   return `Rs ${Number(v || 0).toFixed(0)}`;
@@ -263,6 +264,17 @@ function createProductsGrid(products) {
   return grid;
 }
 
+function captureCarouselScroll() {
+  const next = {};
+  refs.productGrid.querySelectorAll(".category-block").forEach((block) => {
+    const key = block.dataset.category || "";
+    const carousel = block.querySelector(".product-carousel");
+    if (!key || !carousel) return;
+    next[key] = carousel.scrollLeft;
+  });
+  carouselScrollByCategory = next;
+}
+
 function renderCategoryBackButton() {
   if (!refs.backFromCategoryBtn) return;
   const activeCategory = state.activeCategory !== "all";
@@ -287,6 +299,7 @@ function renderGroupedProducts(products) {
     if (!categoryProducts.length) return;
     const block = document.createElement("section");
     block.className = "category-block";
+    block.dataset.category = category;
     const head = document.createElement("div");
     head.className = "category-head";
     head.innerHTML = `
@@ -300,12 +313,19 @@ function renderGroupedProducts(products) {
     block.appendChild(head);
     const carousel = createProductsGrid(categoryProducts);
     carousel.classList.add("product-carousel");
+    const savedScroll = Number(carouselScrollByCategory[category] || 0);
+    if (savedScroll > 0) {
+      requestAnimationFrame(() => {
+        carousel.scrollLeft = savedScroll;
+      });
+    }
     block.appendChild(carousel);
     refs.productGrid.appendChild(block);
   });
 }
 
 function renderProducts() {
+  captureCarouselScroll();
   refs.productGrid.innerHTML = "";
   renderCategoryBackButton();
   const products = filteredProducts();
@@ -332,16 +352,17 @@ function renderCart() {
     if (!p) return;
     total += p.price * item.qty;
     const row = document.createElement("div");
-    row.className = "item-card";
+    row.className = "item-card cart-item";
     row.innerHTML = `
-      <div>
+      <div class="cart-meta">
         <h4>${p.name}</h4>
         <p>${item.qty} x ${priceWithUnit(p)}</p>
       </div>
-      <div class="actions">
+      <div class="actions cart-controls">
         <button class="btn ghost dec">-</button>
+        <span class="cart-qty">${item.qty}</span>
         <button class="btn ghost inc">+</button>
-        <button class="btn danger del">Remove</button>
+        <button class="btn danger del" title="Remove" aria-label="Remove">&#128465;</button>
       </div>
     `;
     row.querySelector(".dec").addEventListener("click", () => updateCart(p.id, item.qty - 1));
