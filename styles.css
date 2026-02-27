@@ -793,8 +793,8 @@ input::placeholder {
 }
 
 .customer-page .product-grid {
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 0.55rem;
 }
 
 .customer-page .product-card {
@@ -808,8 +808,8 @@ input::placeholder {
 }
 
 .customer-page .product-card img {
-  height: 125px;
-  object-fit: contain;
+  height: 110px;
+  object-fit: cover;
   object-position: center;
   background: #1d2b26;
 }
@@ -1051,7 +1051,7 @@ input::placeholder {
 
   .customer-page .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
+    gap: 0.42rem;
   }
 
   .customer-page .price-row {
@@ -1173,7 +1173,7 @@ input::placeholder {
   }
 
   .customer-page .product-card img {
-    height: 95px;
+    height: 88px;
   }
 
   .customer-page .price-row {
@@ -1213,6 +1213,6 @@ input::placeholder {
   }
 
   .customer-page .product-card img {
-    height: 120px;
+    height: 110px;
   }
 }
