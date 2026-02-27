@@ -133,6 +133,33 @@ async function fetchOrders() {
     .sort((a, b) => Date.parse(b.placedAt) - Date.parse(a.placedAt));
 }
 
+async function syncCustomerProfileFromServer() {
+  const response = await apiFetch("/auth/me");
+  const serverUser = response?.user;
+  if (!serverUser || serverUser.role !== "customer") return;
+
+  state.profile = {
+    username: serverUser.fullName || "",
+    mobile: serverUser.mobile || ""
+  };
+  const address = serverUser.deliveryAddress || {};
+  if (address.fullName && address.phone && address.line1 && address.city && address.state && address.zip) {
+    state.address = {
+      fullName: address.fullName,
+      phone: address.phone,
+      line1: address.line1,
+      city: address.city,
+      state: address.state,
+      zip: address.zip
+    };
+  } else {
+    state.address = null;
+  }
+
+  saveForAllScopes("fm_profile", state.profile);
+  if (state.address) saveForAllScopes(ADDRESS_KEY, state.address);
+}
+
 function formatOrderStatus(status) {
   return String(status || "placed")
     .replaceAll("_", " ")
@@ -450,23 +477,52 @@ refs.profileToggle.addEventListener("click", () => refs.profileMenu.classList.to
 document.addEventListener("click", (e) => {
   if (!e.target.closest(".profile-wrap")) refs.profileMenu.classList.remove("open");
 });
-refs.addressForm.addEventListener("submit", (e) => {
+refs.addressForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  state.address = Object.fromEntries(new FormData(refs.addressForm).entries());
-  state.addressEditMode = false;
-  saveJSON(ADDRESS_KEY_SCOPED, state.address);
-  saveForAllScopes(ADDRESS_KEY, state.address);
-  renderAddress();
-  alert("Address saved.");
+  const payload = Object.fromEntries(new FormData(refs.addressForm).entries());
+  try {
+    const response = await apiFetch("/auth/me/address", {
+      method: "PUT",
+      body: JSON.stringify(payload)
+    });
+    const address = response?.user?.deliveryAddress || payload;
+    state.address = {
+      fullName: address.fullName || "",
+      phone: address.phone || "",
+      line1: address.line1 || "",
+      city: address.city || "",
+      state: address.state || "",
+      zip: address.zip || ""
+    };
+    state.addressEditMode = false;
+    saveJSON(ADDRESS_KEY_SCOPED, state.address);
+    saveForAllScopes(ADDRESS_KEY, state.address);
+    renderAddress();
+    alert("Address saved.");
+  } catch (error) {
+    alert(error.message || "Could not save address.");
+  }
 });
-refs.profileForm.addEventListener("submit", (e) => {
+refs.profileForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  state.profile = Object.fromEntries(new FormData(refs.profileForm).entries());
-  state.profileEditMode = false;
-  saveJSON(PROFILE_KEY_SCOPED, state.profile);
-  saveForAllScopes("fm_profile", state.profile);
-  renderProfile();
-  alert("Profile saved.");
+  const payload = Object.fromEntries(new FormData(refs.profileForm).entries());
+  try {
+    const response = await apiFetch("/auth/me/profile", {
+      method: "PUT",
+      body: JSON.stringify(payload)
+    });
+    state.profile = {
+      username: response?.user?.fullName || payload.username || "",
+      mobile: response?.user?.mobile || payload.mobile || ""
+    };
+    state.profileEditMode = false;
+    saveJSON(PROFILE_KEY_SCOPED, state.profile);
+    saveForAllScopes("fm_profile", state.profile);
+    renderProfile();
+    alert("Profile saved.");
+  } catch (error) {
+    alert(error.message || "Could not save profile.");
+  }
 });
 refs.editProfileBtn.addEventListener("click", () => {
   if (!state.profile) return;
@@ -498,6 +554,7 @@ refs.logoutCustomer.addEventListener("click", () => {
 
 async function initCustomer() {
   try {
+    await syncCustomerProfileFromServer();
     await fetchProducts();
     await fetchOrders();
     renderProducts();

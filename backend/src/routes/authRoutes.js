@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import { User } from "../models/User.js";
+import { authRequired } from "../middleware/auth.js";
 
 const router = express.Router();
 const googleClient = new OAuth2Client();
@@ -34,11 +35,20 @@ function signRefreshToken(user) {
 }
 
 function userPayload(user) {
+  const address = user.deliveryAddress || {};
   return {
     id: user._id,
     fullName: user.fullName,
     email: user.email,
     mobile: user.mobile || "",
+    deliveryAddress: {
+      fullName: address.fullName || "",
+      phone: address.phone || "",
+      line1: address.line1 || "",
+      city: address.city || "",
+      state: address.state || "",
+      zip: address.zip || ""
+    },
     role: user.role
   };
 }
@@ -254,6 +264,71 @@ router.post("/google", async (req, res) => {
     return res.json(await buildAuthResponse(user));
   } catch (error) {
     return res.status(401).json({ message: "Google sign-in failed.", error: error.message });
+  }
+});
+
+router.get("/me", authRequired, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found." });
+    return res.json({ user: userPayload(user) });
+  } catch (error) {
+    return res.status(500).json({ message: "Could not fetch profile.", error: error.message });
+  }
+});
+
+router.put("/me/profile", authRequired, async (req, res) => {
+  try {
+    const { username, mobile } = req.body;
+    const cleanName = String(username || "").trim();
+    const cleanMobile = String(mobile || "").trim();
+    if (!cleanName || !cleanMobile) {
+      return res.status(400).json({ message: "username and mobile are required." });
+    }
+    if (!/^\d{10}$/.test(cleanMobile)) {
+      return res.status(400).json({ message: "Mobile number must be exactly 10 digits." });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found." });
+    if (user.role !== "customer") return res.status(403).json({ message: "Forbidden." });
+
+    const mobileOwner = await User.findOne({ mobile: cleanMobile, _id: { $ne: user._id } });
+    if (mobileOwner) return res.status(409).json({ message: "Mobile already used by another account." });
+
+    user.fullName = cleanName;
+    user.mobile = cleanMobile;
+    await user.save();
+    return res.json({ user: userPayload(user) });
+  } catch (error) {
+    return res.status(500).json({ message: "Could not update profile.", error: error.message });
+  }
+});
+
+router.put("/me/address", authRequired, async (req, res) => {
+  try {
+    const { fullName, phone, line1, city, state, zip } = req.body;
+    const payload = {
+      fullName: String(fullName || "").trim(),
+      phone: String(phone || "").trim(),
+      line1: String(line1 || "").trim(),
+      city: String(city || "").trim(),
+      state: String(state || "").trim(),
+      zip: String(zip || "").trim()
+    };
+    if (!payload.fullName || !payload.phone || !payload.line1 || !payload.city || !payload.state || !payload.zip) {
+      return res.status(400).json({ message: "All address fields are required." });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found." });
+    if (user.role !== "customer") return res.status(403).json({ message: "Forbidden." });
+
+    user.deliveryAddress = payload;
+    await user.save();
+    return res.json({ user: userPayload(user) });
+  } catch (error) {
+    return res.status(500).json({ message: "Could not update address.", error: error.message });
   }
 });
 
