@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - HarvestHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-card">
+      <h1>Admin Login</h1>
+      <p>Control inventory, pricing, and product media for all storefronts.</p>
+      <form id="adminLoginForm" class="auth-form">
+        <input name="username" placeholder="Username" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <button class="btn primary" type="submit">Login</button>
+      </form>
+      <a class="auth-link portal-link" href="index.html">Back to portal</a>
+    </section>
+    <aside class="auth-visual admin-visual">
+      <h2>Control Center</h2>
+      <p>Monitor live stock and keep the village supply chain consistent.</p>
+    </aside>
+  </main>
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

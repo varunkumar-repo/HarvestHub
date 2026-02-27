@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - HarvestHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="farm-page">
+  <header class="nav-top">
+    <a href="admin.html" class="brandline">HarvestHub Admin</a>
+    <p class="admin-note">Inventory and pricing control panel</p>
+    <button id="logoutAdmin" class="btn danger">Logout</button>
+  </header>
+
+  <main class="admin-main">
+    <section class="hero-farm admin-hero">
+      <div>
+        <p class="tag">Admin Control</p>
+        <h1>Manage Village Supply Inventory</h1>
+        <p>Add products with images, update stock and price in real time.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80" alt="Agriculture landscape">
+    </section>
+
+    <section class="admin-tabs">
+      <button class="nav-btn active" data-admin-view="addProductView">Add Product</button>
+      <button class="nav-btn" data-admin-view="inventoryView">Inventory</button>
+      <button class="nav-btn" data-admin-view="recentOrdersView">Recent Orders</button>
+      <button class="nav-btn" data-admin-view="pastOrdersView">Past Orders</button>
+    </section>
+
+    <section id="addProductView" class="view-card visible">
+      <form id="productForm" class="product-form">
+        <input name="name" placeholder="Product Name" required>
+        <select name="category" required>
+          <option value="Dairy">Dairy</option>
+          <option value="Vegetables">Vegetables</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Grains">Grains</option>
+        </select>
+        <select name="unit" required>
+          <option value="1kg">1kg</option>
+          <option value="500grams">500grams</option>
+          <option value="1L">1L</option>
+          <option value="500ml">500ml</option>
+          <option value="dozen">dozen</option>
+          <option value="1 set">1 set</option>
+          <option value="1 pcs">1 pcs</option>
+        </select>
+        <input name="price" type="number" min="1" placeholder="Price" required>
+        <input name="stock" type="number" min="0" placeholder="Stock" required>
+        <label class="file-upload-field">
+          <span>Upload Image</span>
+          <input name="imageFile" type="file" accept="image/*" required>
+        </label>
+        <button class="btn primary" type="submit">Add Product</button>
+      </form>
+    </section>
+
+    <section id="inventoryView" class="view-card">
+      <div class="admin-inventory-filters">
+        <input id="adminSearchInput" type="text" placeholder="Search product name...">
+        <select id="adminCategoryFilter">
+          <option value="all">All Categories</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Vegetables">Vegetables</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Grains">Grains</option>
+        </select>
+      </div>
+      <div class="admin-head-row">
+        <span>Image</span>
+        <span>Product</span>
+        <span>Price</span>
+        <span>Stock</span>
+        <span>Save</span>
+        <span>Delete</span>
+      </div>
+      <div id="adminTable" class="admin-table"></div>
+    </section>
+
+    <section id="recentOrdersView" class="view-card">
+      <div class="section-head">
+        <h2>Recent Orders</h2>
+      </div>
+      <div class="order-filters">
+        <button id="recentOrdersBtn" class="btn ghost mini">Refresh Recent</button>
+      </div>
+      <div id="adminRecentOrdersList" class="list-grid"></div>
+    </section>
+
+    <section id="pastOrdersView" class="view-card">
+      <div class="section-head">
+        <h2>Past Orders</h2>
+      </div>
+      <div class="order-filters">
+        <input id="filterDateInput" type="date">
+        <button id="filterDateBtn" class="btn ghost mini">By Date</button>
+        <input id="filterMonthInput" type="month">
+        <button id="filterMonthBtn" class="btn ghost mini">By Month</button>
+      </div>
+      <div id="adminPastOrdersList" class="list-grid"></div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

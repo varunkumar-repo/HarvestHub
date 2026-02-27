@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard - HarvestHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="farm-page">
+  <header class="nav-top">
+    <a href="customer.html" class="brandline">HarvestHub</a>
+    <nav class="nav-links">
+      <button class="nav-btn active" data-view="products">Products</button>
+      <button class="nav-btn" data-view="cart">Cart</button>
+      <button class="nav-btn" data-view="orders">Previous Orders</button>
+    </nav>
+    <div class="profile-wrap">
+      <button id="profileToggle" class="btn ghost">Profile</button>
+      <div id="profileMenu" class="profile-menu">
+        <div class="profile-title-row">
+          <h4>Profile</h4>
+          <button id="editProfileBtn" class="btn ghost mini" type="button">Edit</button>
+        </div>
+        <div id="savedProfile" class="saved-box"></div>
+        <form id="profileForm" class="address-form">
+          <input name="username" placeholder="Username" required>
+          <input name="mobile" placeholder="Mobile Number" required>
+          <button class="btn primary" type="submit">Save Profile</button>
+        </form>
+        <div class="profile-title-row">
+          <h4>Delivery Address</h4>
+          <button id="editAddressBtn" class="btn ghost mini" type="button">Edit</button>
+        </div>
+        <div id="savedAddress" class="saved-box"></div>
+        <form id="addressForm" class="address-form">
+          <input name="fullName" placeholder="Full Name" required>
+          <input name="phone" placeholder="Phone Number" required>
+          <input name="line1" placeholder="Street / House" required>
+          <input name="city" placeholder="City" required>
+          <input name="state" placeholder="State" required>
+          <input name="zip" placeholder="PIN / ZIP" required>
+          <button class="btn primary" type="submit">Save Address</button>
+        </form>
+        <button id="logoutCustomer" class="btn danger" type="button">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="customer-main">
+    <section id="customerHero" class="hero-farm">
+      <div>
+        <p class="tag">From Village Farms</p>
+        <h1>Pure farm goodness delivered fresh to your home</h1>
+        <p>Direct delivery sourced from local farms and dairy partners.</p>
+      </div>
+      <img class="dashboard-hero-image" src="assets/dashboard-image.png?v=20260227-111724" alt="Nature farming landscape">
+    </section>
+
+    <section id="productsView" class="view-card visible">
+      <div class="toolbar">
+        <input id="searchInput" type="text" placeholder="Search products...">
+        <select id="categoryFilter">
+          <option value="all">All Categories</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Vegetables">Vegetables</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Grains">Grains</option>
+        </select>
+      </div>
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+
+    <section id="cartView" class="view-card">
+      <div class="section-head">
+        <h2>Your Cart</h2>
+        <button id="checkoutBtn" class="btn primary">Checkout</button>
+      </div>
+      <div id="cartItems" class="list-grid"></div>
+      <div class="summary">Total: Rs <span id="cartTotal">0</span></div>
+    </section>
+
+    <section id="ordersView" class="view-card">
+      <div class="section-head">
+        <h2>Previous Orders</h2>
+      </div>
+      <div id="ordersList" class="list-grid"></div>
+    </section>
+  </main>
+
+  <template id="productCardTpl">
+    <article class="product-card">
+      <img alt="">
+      <div class="card-body">
+        <p class="chip"></p>
+        <h3></h3>
+        <div class="price-row">
+          <p class="price"></p>
+          <button class="btn primary add-btn">Add</button>
+          <div class="qty-controls">
+            <button class="btn ghost dec-btn" type="button">-</button>
+            <span class="qty-value">1</span>
+            <button class="btn ghost inc-btn" type="button">+</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="auth.js"></script>
+  <script src="data.js"></script>
+  <script src="customer.js"></script>
+</body>
+</html>
