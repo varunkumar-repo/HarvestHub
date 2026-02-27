@@ -673,6 +673,103 @@ input::placeholder {
   object-fit: cover;
 }
 
+.customer-page .nav-top {
+  background: rgba(17, 31, 26, 0.96);
+  border-bottom: 1px solid #3e554c;
+}
+
+.customer-page .customer-main {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 1.15rem;
+  gap: 1.15rem;
+}
+
+.customer-page .hero-farm {
+  border: 1px solid #4f6a5f;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(47, 70, 60, 0.95), rgba(33, 50, 43, 0.95));
+  padding: 1.15rem;
+}
+
+.customer-page .hero-farm h1 {
+  margin: 0.45rem 0 0.55rem;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+}
+
+.customer-page .hero-farm p {
+  margin: 0;
+}
+
+.customer-page .dashboard-hero-image {
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 14px 26px rgba(6, 14, 11, 0.35);
+}
+
+.customer-page .view-card {
+  border: 1px solid #4f6a5f;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(36, 54, 47, 0.95), rgba(29, 43, 38, 0.95));
+  padding: 1rem;
+}
+
+.customer-page .toolbar {
+  grid-template-columns: minmax(260px, 1fr) 220px;
+  align-items: center;
+}
+
+.customer-page .product-grid {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.customer-page .product-card {
+  border: 1px solid #5d7a6f;
+  border-radius: 15px;
+  background: #263a33;
+}
+
+.customer-page .product-card:hover {
+  transform: translateY(-5px);
+}
+
+.customer-page .product-card img {
+  height: 165px;
+}
+
+.customer-page .card-body {
+  padding: 0.85rem;
+}
+
+.customer-page .chip {
+  color: #abf2cf;
+}
+
+.customer-page .price {
+  font-size: 1.02rem;
+}
+
+.customer-page .list-grid {
+  gap: 0.72rem;
+}
+
+.customer-page .item-card {
+  border: 1px solid #607d71;
+  border-radius: 13px;
+  background: #283b34;
+  padding: 0.85rem;
+}
+
+.customer-page .summary {
+  margin-top: 0.95rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: #22312b;
+  border: 1px solid #50685d;
+}
+
 @media (max-width: 960px) {
   .auth-shell {
     grid-template-columns: 1fr;
@@ -792,6 +889,11 @@ input::placeholder {
     gap: 0.75rem;
   }
 
+  .customer-page .customer-main {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
   .hero-farm {
     padding: 0.8rem;
   }
@@ -817,6 +919,10 @@ input::placeholder {
   .product-grid {
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 0.7rem;
+  }
+
+  .customer-page .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   }
 
   .product-card img {
@@ -877,6 +983,12 @@ input::placeholder {
 
   .product-grid {
     grid-template-columns: 1fr;
+  }
+
+  .customer-page .view-card,
+  .customer-page .hero-farm {
+    padding: 0.85rem;
+    border-radius: 12px;
   }
 
   .price-row {
