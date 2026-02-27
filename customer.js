@@ -51,7 +51,15 @@ function currency(v) {
 
 function priceWithUnit(product) {
   const unit = (product?.unit || "unit").trim();
-  const cleanUnit = unit.startsWith("/") ? unit.slice(1).trim() : unit;
+  const rawUnit = unit.startsWith("/") ? unit.slice(1).trim() : unit;
+  const unitMap = {
+    "1kg": "1 kg",
+    "500grams": "500 grams",
+    "500ml": "500 ml",
+    "1L": "1 L",
+    "1pcs": "1 pcs"
+  };
+  const cleanUnit = unitMap[rawUnit] || rawUnit;
   return `${currency(product.price)} / ${cleanUnit}`;
 }
 
