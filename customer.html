@@ -62,13 +62,7 @@
     <section id="productsView" class="view-card visible">
       <div class="toolbar">
         <input id="searchInput" type="text" placeholder="Search products...">
-        <select id="categoryFilter">
-          <option value="all">All Categories</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Vegetables">Vegetables</option>
-          <option value="Fruits">Fruits</option>
-          <option value="Grains">Grains</option>
-        </select>
+        <div id="activeCategoryLabel" class="active-category-label" style="display:none;"></div>
         <button id="backFromCategoryBtn" class="btn ghost mini" type="button" style="display:none;">Back</button>
       </div>
       <div id="productGrid" class="product-sections"></div>

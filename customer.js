@@ -13,6 +13,7 @@ const state = {
   address: loadJSON(ADDRESS_KEY_SCOPED, null),
   profile: loadJSON(PROFILE_KEY_SCOPED, null),
   view: "products",
+  activeCategory: "all",
   profileEditMode: false,
   addressEditMode: false
 };
@@ -26,7 +27,7 @@ const refs = {
   productGrid: document.getElementById("productGrid"),
   productCardTpl: document.getElementById("productCardTpl"),
   searchInput: document.getElementById("searchInput"),
-  categoryFilter: document.getElementById("categoryFilter"),
+  activeCategoryLabel: document.getElementById("activeCategoryLabel"),
   backFromCategoryBtn: document.getElementById("backFromCategoryBtn"),
   cartItems: document.getElementById("cartItems"),
   cartTotal: document.getElementById("cartTotal"),
@@ -101,7 +102,7 @@ function setView(view) {
 
 function filteredProducts() {
   const q = refs.searchInput.value.trim().toLowerCase();
-  const c = refs.categoryFilter.value;
+  const c = state.activeCategory;
   return state.products.filter((p) => {
     const byText = !q || p.name.toLowerCase().includes(q);
     const byCategory = c === "all" || c === p.category;
@@ -187,8 +188,12 @@ function createProductsGrid(products) {
 
 function renderCategoryBackButton() {
   if (!refs.backFromCategoryBtn) return;
-  const activeCategory = refs.categoryFilter.value !== "all";
+  const activeCategory = state.activeCategory !== "all";
   refs.backFromCategoryBtn.style.display = activeCategory ? "inline-flex" : "none";
+  if (refs.activeCategoryLabel) {
+    refs.activeCategoryLabel.style.display = activeCategory ? "inline-flex" : "none";
+    refs.activeCategoryLabel.textContent = activeCategory ? state.activeCategory : "";
+  }
 }
 
 function renderGroupedProducts(products) {
@@ -212,7 +217,7 @@ function renderGroupedProducts(products) {
       <button class="category-see-all" type="button" data-category="${category}">See All &gt;</button>
     `;
     head.querySelector(".category-see-all").addEventListener("click", () => {
-      refs.categoryFilter.value = category;
+      state.activeCategory = category;
       renderProducts();
     });
     block.appendChild(head);
@@ -233,7 +238,7 @@ function renderProducts() {
   }
 
   const query = refs.searchInput.value.trim();
-  const showGrouped = !query && refs.categoryFilter.value === "all";
+  const showGrouped = !query && state.activeCategory === "all";
   if (showGrouped) {
     renderGroupedProducts(products);
     return;
@@ -384,9 +389,8 @@ async function checkout() {
 
 refs.navButtons.forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
 refs.searchInput.addEventListener("input", renderProducts);
-refs.categoryFilter.addEventListener("change", renderProducts);
 refs.backFromCategoryBtn?.addEventListener("click", () => {
-  refs.categoryFilter.value = "all";
+  state.activeCategory = "all";
   refs.searchInput.value = "";
   renderProducts();
 });
