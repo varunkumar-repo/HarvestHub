@@ -18,9 +18,13 @@ function strongPasswordMessage() {
   return "Password must be at least 8 characters and include uppercase, lowercase, number and special character.";
 }
 
+function resolveUserScope(user) {
+  return String(user?.id || user?._id || user?.email || user?.mobile || "guest");
+}
+
 function cacheCustomerProfile(user) {
   if (!user || user.role !== "customer") return;
-  const scopedKey = `fm_profile_${user.id || "guest"}`;
+  const scopedKey = `fm_profile_${resolveUserScope(user)}`;
   const profile = {
     username: user.fullName || "",
     mobile: user.mobile || ""

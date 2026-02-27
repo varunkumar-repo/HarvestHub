@@ -1,22 +1,47 @@
 requireRole("customer", "customer-login.html");
 
 const currentUser = getUser();
-const userScope = currentUser?.id || "guest";
+
+function resolveUserScope(user) {
+  return String(user?.id || user?._id || user?.email || user?.mobile || "guest");
+}
+
+function loadFirstExistingJson(keys, fallback = null) {
+  for (const key of keys) {
+    const raw = localStorage.getItem(key);
+    if (!raw) continue;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      continue;
+    }
+  }
+  return fallback;
+}
+
+const userScope = resolveUserScope(currentUser);
 const CART_KEY_SCOPED = `${CART_KEY}_${userScope}`;
 const ADDRESS_KEY_SCOPED = `${ADDRESS_KEY}_${userScope}`;
 const PROFILE_KEY_SCOPED = `fm_profile_${userScope}`;
+const LEGACY_ADDRESS_KEYS = [ADDRESS_KEY_SCOPED, ADDRESS_KEY, `${ADDRESS_KEY}_guest`];
+const LEGACY_PROFILE_KEYS = [PROFILE_KEY_SCOPED, "fm_profile_guest"];
+const LEGACY_CART_KEYS = [CART_KEY_SCOPED, CART_KEY, `${CART_KEY}_guest`];
 
 const state = {
   products: [],
-  cart: loadJSON(CART_KEY_SCOPED, []),
+  cart: loadFirstExistingJson(LEGACY_CART_KEYS, []),
   orders: [],
-  address: loadJSON(ADDRESS_KEY_SCOPED, null),
-  profile: loadJSON(PROFILE_KEY_SCOPED, null),
+  address: loadFirstExistingJson(LEGACY_ADDRESS_KEYS, null),
+  profile: loadFirstExistingJson(LEGACY_PROFILE_KEYS, null),
   view: "products",
   activeCategory: "all",
   profileEditMode: false,
   addressEditMode: false
 };
+
+saveJSON(CART_KEY_SCOPED, state.cart || []);
+if (state.address) saveJSON(ADDRESS_KEY_SCOPED, state.address);
+if (state.profile) saveJSON(PROFILE_KEY_SCOPED, state.profile);
 
 const refs = {
   navButtons: [...document.querySelectorAll(".nav-btn")],
