@@ -409,6 +409,10 @@ input::placeholder {
 .category-block {
   display: grid;
   gap: 0.55rem;
+  border: 1px solid #4d6a5f;
+  border-radius: 12px;
+  padding: 0.65rem;
+  background: rgba(29, 44, 38, 0.72);
 }
 
 .category-head {
@@ -426,7 +430,7 @@ input::placeholder {
 .category-see-all {
   border: 0;
   background: transparent;
-  color: #9ce7c5;
+  color: #ffd27a;
   font: inherit;
   font-weight: 800;
   font-size: 0.8rem;
@@ -435,7 +439,7 @@ input::placeholder {
 }
 
 .category-see-all:hover {
-  color: #cbffe8;
+  color: #ffe7b5;
 }
 
 .product-carousel {
@@ -1355,4 +1359,25 @@ input::placeholder {
   .customer-page .product-card img {
     height: 110px;
   }
+}
+
+/* Keep Add button fully visible inside compact product cards */
+.customer-page .product-card .price-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.customer-page .product-card .price-row .price {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.customer-page .product-card .price-row .add-btn,
+.customer-page .product-card .price-row .qty-controls {
+  flex: 0 0 auto;
 }

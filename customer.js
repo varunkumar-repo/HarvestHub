@@ -209,7 +209,7 @@ function renderGroupedProducts(products) {
     head.className = "category-head";
     head.innerHTML = `
       <h3 class="category-title">${category}</h3>
-      <button class="category-see-all" type="button" data-category="${category}">See All</button>
+      <button class="category-see-all" type="button" data-category="${category}">See All &gt;</button>
     `;
     head.querySelector(".category-see-all").addEventListener("click", () => {
       refs.categoryFilter.value = category;
