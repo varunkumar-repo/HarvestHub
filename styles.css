@@ -53,7 +53,8 @@ h1, h2, h3, h4 {
   position: relative;
   display: grid;
   place-items: center;
-  padding: 6rem 1rem;
+  min-height: 100vh;
+  padding: 1rem;
 }
 
 .hero-card,
@@ -67,6 +68,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-card {
+  width: min(780px, 100%);
   max-width: 780px;
   padding: 2rem;
 }
@@ -678,6 +680,10 @@ input::placeholder {
   border-bottom: 1px solid #3e554c;
 }
 
+.customer-page .brandline {
+  min-width: 0;
+}
+
 .customer-page .customer-main {
   width: min(1200px, 100%);
   margin: 0 auto;
@@ -768,6 +774,16 @@ input::placeholder {
   border-radius: 12px;
   background: #22312b;
   border: 1px solid #50685d;
+}
+
+.customer-page .profile-menu,
+.customer-page .item-card,
+.customer-page .card-body h3,
+.customer-page .card-body p,
+.customer-page .price,
+.customer-page .chip,
+.customer-page .order-status-chip {
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 960px) {
@@ -861,7 +877,8 @@ input::placeholder {
 
 @media (max-width: 768px) {
   .landing-wrap {
-    padding: 2.5rem 0.85rem;
+    min-height: 100dvh;
+    padding: 0.85rem;
   }
 
   .hero-card,
@@ -894,6 +911,42 @@ input::placeholder {
     padding: 0.75rem;
   }
 
+  .customer-page .nav-top {
+    position: static;
+    padding: 0.75rem;
+    gap: 0.65rem;
+  }
+
+  .customer-page .brandline {
+    width: 100%;
+  }
+
+  .customer-page .nav-links {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .customer-page .nav-links .nav-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 0.5rem 0.35rem;
+    font-size: 0.84rem;
+  }
+
+  .customer-page .profile-wrap {
+    width: 100%;
+  }
+
+  .customer-page #profileToggle {
+    width: 100%;
+  }
+
+  .customer-page .toolbar {
+    grid-template-columns: 1fr;
+  }
+
   .hero-farm {
     padding: 0.8rem;
   }
@@ -923,6 +976,15 @@ input::placeholder {
 
   .customer-page .product-grid {
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
+
+  .customer-page .price-row {
+    align-items: stretch;
+    gap: 0.45rem;
+  }
+
+  .customer-page .price-row .price {
+    width: 100%;
   }
 
   .product-card img {
@@ -989,6 +1051,22 @@ input::placeholder {
   .customer-page .hero-farm {
     padding: 0.85rem;
     border-radius: 12px;
+  }
+
+  .customer-page .nav-links {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-page .nav-links .nav-btn {
+    font-size: 0.92rem;
+  }
+
+  .customer-page .hero-farm h1 {
+    font-size: 1.22rem;
+  }
+
+  .customer-page .product-card img {
+    height: 170px;
   }
 
   .price-row {
