@@ -827,12 +827,23 @@ input::placeholder {
   justify-content: center;
   padding: 0.46rem 0.66rem;
   border-radius: 10px;
-  border: 1px solid #5f7f72;
-  background: #2a3d36;
-  color: #dcf2e7;
+  border: 1px solid #f0c97d;
+  background: #3a2a13;
+  color: #ffe6bb;
   font-weight: 800;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   white-space: nowrap;
+}
+
+#backFromCategoryBtn {
+  background: linear-gradient(120deg, #f0c97d, #d69f3d);
+  border: 1px solid #ffe3ad;
+  color: #1d170d;
+  font-weight: 800;
+}
+
+#backFromCategoryBtn:hover {
+  filter: brightness(1.05);
 }
 
 .customer-page .product-grid {
@@ -856,9 +867,10 @@ input::placeholder {
 .customer-page .product-card img {
   height: 110px;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   background: #1d2b26;
+  padding: 0.2rem;
 }
 
 .customer-page .card-body {
