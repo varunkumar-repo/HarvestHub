@@ -1,11 +1,17 @@
 requireRole("customer", "customer-login.html");
 
+const currentUser = getUser();
+const userScope = currentUser?.id || "guest";
+const CART_KEY_SCOPED = `${CART_KEY}_${userScope}`;
+const ADDRESS_KEY_SCOPED = `${ADDRESS_KEY}_${userScope}`;
+const PROFILE_KEY_SCOPED = `fm_profile_${userScope}`;
+
 const state = {
   products: [],
-  cart: loadJSON(CART_KEY, []),
+  cart: loadJSON(CART_KEY_SCOPED, []),
   orders: [],
-  address: loadJSON(ADDRESS_KEY, null),
-  profile: loadJSON("fm_profile", null),
+  address: loadJSON(ADDRESS_KEY_SCOPED, null),
+  profile: loadJSON(PROFILE_KEY_SCOPED, null),
   view: "products",
   profileEditMode: false,
   addressEditMode: false
@@ -58,7 +64,7 @@ async function fetchProducts() {
       return { ...item, qty: Math.min(item.qty, product.stock) };
     })
     .filter((item) => item.qty > 0);
-  saveJSON(CART_KEY, state.cart);
+  saveJSON(CART_KEY_SCOPED, state.cart);
 }
 
 async function fetchOrders() {
@@ -111,6 +117,7 @@ function addToCart(productId) {
     state.cart.push({ productId, qty: 1 });
   }
   saveJSON(CART_KEY, state.cart);
+  saveJSON(CART_KEY_SCOPED, state.cart);
   renderProducts();
   renderCart();
 }
@@ -125,7 +132,7 @@ function updateCart(productId, qty) {
   } else {
     item.qty = Math.min(qty, product.stock);
   }
-  saveJSON(CART_KEY, state.cart);
+  saveJSON(CART_KEY_SCOPED, state.cart);
   renderProducts();
   renderCart();
 }
@@ -304,7 +311,7 @@ async function checkout() {
     });
 
     state.cart = [];
-    saveJSON(CART_KEY, state.cart);
+    saveJSON(CART_KEY_SCOPED, state.cart);
     await fetchProducts();
     await fetchOrders();
     renderProducts();
@@ -328,7 +335,7 @@ refs.addressForm.addEventListener("submit", (e) => {
   e.preventDefault();
   state.address = Object.fromEntries(new FormData(refs.addressForm).entries());
   state.addressEditMode = false;
-  saveJSON(ADDRESS_KEY, state.address);
+  saveJSON(ADDRESS_KEY_SCOPED, state.address);
   renderAddress();
   alert("Address saved.");
 });
@@ -336,7 +343,7 @@ refs.profileForm.addEventListener("submit", (e) => {
   e.preventDefault();
   state.profile = Object.fromEntries(new FormData(refs.profileForm).entries());
   state.profileEditMode = false;
-  saveJSON("fm_profile", state.profile);
+  saveJSON(PROFILE_KEY_SCOPED, state.profile);
   renderProfile();
   alert("Profile saved.");
 });

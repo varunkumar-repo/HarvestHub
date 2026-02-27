@@ -20,11 +20,12 @@ function strongPasswordMessage() {
 
 function cacheCustomerProfile(user) {
   if (!user || user.role !== "customer") return;
+  const scopedKey = `fm_profile_${user.id || "guest"}`;
   const profile = {
     username: user.fullName || "",
     mobile: user.mobile || ""
   };
-  localStorage.setItem("fm_profile", JSON.stringify(profile));
+  localStorage.setItem(scopedKey, JSON.stringify(profile));
 }
 
 
