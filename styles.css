@@ -43,6 +43,12 @@ h1, h2, h3, h4 {
   background-position: center;
 }
 
+.auth-page {
+  background-image:
+    linear-gradient(100deg, rgba(10, 14, 12, 0.86), rgba(10, 14, 12, 0.9)),
+    url("assets/Main-photo.jpg");
+}
+
 
 .overlay {
   position: fixed;
@@ -192,7 +198,7 @@ input::placeholder {
   padding: 1.6rem;
   background-image:
     linear-gradient(130deg, rgba(0, 0, 0, 0.58), rgba(23, 23, 23, 0.92)),
-    url("assets/login-image.png");
+    url("assets/Main-photo.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
@@ -203,7 +209,7 @@ input::placeholder {
 .auth-visual.admin-visual {
   background-image:
     linear-gradient(130deg, rgba(0, 0, 0, 0.58), rgba(23, 23, 23, 0.92)),
-    url("https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=1400&q=80");
+    url("assets/Main-photo.jpg");
 }
 
 .nav-top {
@@ -304,6 +310,10 @@ input::placeholder {
   padding: 0.6rem;
   color: #d4d4cb;
   margin-bottom: 0.6rem;
+}
+
+#logoutCustomer {
+  margin-top: 0.75rem;
 }
 
 .btn.mini {
