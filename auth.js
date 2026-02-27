@@ -59,6 +59,18 @@ function clearRole() {
   localStorage.removeItem(AUTH_USER_KEY);
 }
 
+function loginPageForCurrentContext() {
+  const path = (window.location.pathname || "").toLowerCase();
+  if (path.includes("admin")) return "admin-login.html";
+  return "customer-login.html";
+}
+
+function redirectToLoginWithReason() {
+  const target = loginPageForCurrentContext();
+  if (window.location.pathname.toLowerCase().endsWith(target.toLowerCase())) return;
+  window.location.href = target;
+}
+
 async function refreshAccessToken() {
   const refreshToken = getRefreshToken();
   if (!refreshToken) return false;
@@ -98,6 +110,7 @@ async function apiFetch(path, options = {}) {
     const ok = await refreshAccessToken();
     if (!ok) {
       clearRole();
+      redirectToLoginWithReason();
       throw new Error("Session expired. Please login again.");
     }
   }
@@ -129,7 +142,10 @@ async function apiFetch(path, options = {}) {
     payload = null;
   }
   if (!response.ok) {
-    if (response.status === 401) clearRole();
+    if (response.status === 401) {
+      clearRole();
+      redirectToLoginWithReason();
+    }
     const detail = payload?.error ? `${payload.message} ${payload.error}` : payload?.message;
     throw new Error(detail || `Request failed (${response.status})`);
   }

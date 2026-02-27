@@ -189,11 +189,7 @@ function createProductsGrid(products) {
 function renderCategoryBackButton() {
   if (!refs.backFromCategoryBtn) return;
   const activeCategory = state.activeCategory !== "all";
-  refs.productsView.classList.toggle("category-focused", activeCategory);
   refs.backFromCategoryBtn.style.display = activeCategory ? "inline-flex" : "none";
-  if (refs.searchInput) {
-    refs.searchInput.style.display = activeCategory ? "none" : "block";
-  }
   if (refs.activeCategoryLabel) {
     refs.activeCategoryLabel.style.display = activeCategory ? "inline-flex" : "none";
     refs.activeCategoryLabel.textContent = activeCategory ? state.activeCategory : "";
