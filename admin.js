@@ -30,10 +30,19 @@ function currency(v) {
 }
 
 function unitOptionsHtml(selectedUnit) {
-  const units = ["1kg", "500grams", "1L", "500ml", "dozen", "1 set", "1 pcs"];
+  const normalizedSelectedUnit = selectedUnit === "500 g" ? "500grams" : selectedUnit;
+  const units = [
+    { value: "1kg", label: "1 kg" },
+    { value: "500grams", label: "500 g" },
+    { value: "1L", label: "1 L" },
+    { value: "500ml", label: "500 ml" },
+    { value: "dozen", label: "dozen" },
+    { value: "1 set", label: "1 set" },
+    { value: "1 pcs", label: "1 pcs" }
+  ];
   return units.map((unit) => {
-    const selected = selectedUnit === unit ? "selected" : "";
-    return `<option value="${unit}" ${selected}>${unit}</option>`;
+    const selected = normalizedSelectedUnit === unit.value ? "selected" : "";
+    return `<option value="${unit.value}" ${selected}>${unit.label}</option>`;
   }).join("");
 }
 
