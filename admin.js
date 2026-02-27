@@ -213,9 +213,7 @@ function renderRecentOrdersList(orders) {
   refs.adminRecentOrdersList.querySelectorAll(".delete-order-btn").forEach((btn) => {
     btn.addEventListener("click", () => deleteOrder(btn.dataset.orderId));
   });
-  refs.adminRecentOrdersList.querySelectorAll(".save-order-status-btn").forEach((btn) => {
-    btn.addEventListener("click", () => saveOrderStatus(btn.dataset.orderId, refs.adminRecentOrdersList));
-  });
+  bindStatusControls(refs.adminRecentOrdersList);
 }
 
 function renderPastOrdersList(orders) {
@@ -228,12 +226,30 @@ function renderPastOrdersList(orders) {
   refs.adminPastOrdersList.querySelectorAll(".delete-order-btn").forEach((btn) => {
     btn.addEventListener("click", () => deleteOrder(btn.dataset.orderId));
   });
-  refs.adminPastOrdersList.querySelectorAll(".save-order-status-btn").forEach((btn) => {
-    btn.addEventListener("click", () => saveOrderStatus(btn.dataset.orderId, refs.adminPastOrdersList));
+  bindStatusControls(refs.adminPastOrdersList);
+}
+
+function setSaveStatusButtonState(button, isDirty) {
+  if (!button) return;
+  button.classList.toggle("dirty", isDirty);
+  button.classList.toggle("clean", !isDirty);
+}
+
+function bindStatusControls(container) {
+  container.querySelectorAll(".save-order-status-btn").forEach((btn) => {
+    setSaveStatusButtonState(btn, false);
+    btn.addEventListener("click", () => saveOrderStatus(btn.dataset.orderId, container, btn));
+  });
+
+  container.querySelectorAll(".order-status-select").forEach((select) => {
+    select.addEventListener("change", () => {
+      const btn = container.querySelector(`.save-order-status-btn[data-order-id="${select.dataset.orderId}"]`);
+      setSaveStatusButtonState(btn, true);
+    });
   });
 }
 
-async function saveOrderStatus(orderId, container) {
+async function saveOrderStatus(orderId, container, triggerButton = null) {
   const select = container.querySelector(`.order-status-select[data-order-id="${orderId}"]`);
   if (!select) return;
   const status = select.value;
@@ -248,8 +264,10 @@ async function saveOrderStatus(orderId, container) {
       .slice(0, 12);
     renderRecentOrdersList(recent);
     applyPastFilters();
+    setSaveStatusButtonState(triggerButton, false);
   } catch (error) {
     alert(error.message || "Could not update order status.");
+    setSaveStatusButtonState(triggerButton, true);
   }
 }
 

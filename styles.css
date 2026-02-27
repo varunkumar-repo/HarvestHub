@@ -508,6 +508,18 @@ input::placeholder {
   border-radius: 9px;
 }
 
+.save-order-status-btn.clean {
+  background: linear-gradient(120deg, #35b97a, #2a915f);
+  border: 1px solid #6de1a8;
+  color: #0f241b;
+}
+
+.save-order-status-btn.dirty {
+  background: linear-gradient(120deg, #de3d46, #9f1f26);
+  border: 1px solid #f07f86;
+  color: #fff;
+}
+
 .icon-delete-btn {
   min-width: 34px;
   font-size: 1rem;
