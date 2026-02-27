@@ -18,18 +18,28 @@ function strongPasswordMessage() {
   return "Password must be at least 8 characters and include uppercase, lowercase, number and special character.";
 }
 
-function resolveUserScope(user) {
-  return String(user?.id || user?._id || user?.email || user?.mobile || "guest");
+function userScopeCandidates(user) {
+  const values = [
+    user?.id,
+    user?._id,
+    user?.email ? String(user.email).toLowerCase().trim() : "",
+    user?.mobile
+  ]
+    .map((v) => String(v || "").trim())
+    .filter(Boolean);
+  if (!values.length) values.push("guest");
+  return [...new Set(values)];
 }
 
 function cacheCustomerProfile(user) {
   if (!user || user.role !== "customer") return;
-  const scopedKey = `fm_profile_${resolveUserScope(user)}`;
   const profile = {
     username: user.fullName || "",
     mobile: user.mobile || ""
   };
-  localStorage.setItem(scopedKey, JSON.stringify(profile));
+  userScopeCandidates(user).forEach((scope) => {
+    localStorage.setItem(`fm_profile_${scope}`, JSON.stringify(profile));
+  });
 }
 
 

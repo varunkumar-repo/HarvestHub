@@ -2,8 +2,17 @@ requireRole("customer", "customer-login.html");
 
 const currentUser = getUser();
 
-function resolveUserScope(user) {
-  return String(user?.id || user?._id || user?.email || user?.mobile || "guest");
+function userScopeCandidates(user) {
+  const values = [
+    user?.id,
+    user?._id,
+    user?.email ? String(user.email).toLowerCase().trim() : "",
+    user?.mobile
+  ]
+    .map((v) => String(v || "").trim())
+    .filter(Boolean);
+  if (!values.length) values.push("guest");
+  return [...new Set(values)];
 }
 
 function loadFirstExistingJson(keys, fallback = null) {
@@ -19,29 +28,34 @@ function loadFirstExistingJson(keys, fallback = null) {
   return fallback;
 }
 
-const userScope = resolveUserScope(currentUser);
-const CART_KEY_SCOPED = `${CART_KEY}_${userScope}`;
-const ADDRESS_KEY_SCOPED = `${ADDRESS_KEY}_${userScope}`;
-const PROFILE_KEY_SCOPED = `fm_profile_${userScope}`;
-const LEGACY_ADDRESS_KEYS = [ADDRESS_KEY_SCOPED, ADDRESS_KEY, `${ADDRESS_KEY}_guest`];
-const LEGACY_PROFILE_KEYS = [PROFILE_KEY_SCOPED, "fm_profile_guest"];
-const LEGACY_CART_KEYS = [CART_KEY_SCOPED, CART_KEY, `${CART_KEY}_guest`];
+const scopeCandidates = userScopeCandidates(currentUser);
+const primaryScope = scopeCandidates[0];
+const CART_KEY_SCOPED = `${CART_KEY}_${primaryScope}`;
+const ADDRESS_KEY_SCOPED = `${ADDRESS_KEY}_${primaryScope}`;
+const PROFILE_KEY_SCOPED = `fm_profile_${primaryScope}`;
+const ADDRESS_KEYS = [...scopeCandidates.map((s) => `${ADDRESS_KEY}_${s}`), ADDRESS_KEY, `${ADDRESS_KEY}_guest`];
+const PROFILE_KEYS = [...scopeCandidates.map((s) => `fm_profile_${s}`), "fm_profile_guest"];
+const CART_KEYS = [...scopeCandidates.map((s) => `${CART_KEY}_${s}`), CART_KEY, `${CART_KEY}_guest`];
 
 const state = {
   products: [],
-  cart: loadFirstExistingJson(LEGACY_CART_KEYS, []),
+  cart: loadFirstExistingJson(CART_KEYS, []),
   orders: [],
-  address: loadFirstExistingJson(LEGACY_ADDRESS_KEYS, null),
-  profile: loadFirstExistingJson(LEGACY_PROFILE_KEYS, null),
+  address: loadFirstExistingJson(ADDRESS_KEYS, null),
+  profile: loadFirstExistingJson(PROFILE_KEYS, null),
   view: "products",
   activeCategory: "all",
   profileEditMode: false,
   addressEditMode: false
 };
 
-saveJSON(CART_KEY_SCOPED, state.cart || []);
-if (state.address) saveJSON(ADDRESS_KEY_SCOPED, state.address);
-if (state.profile) saveJSON(PROFILE_KEY_SCOPED, state.profile);
+function saveForAllScopes(baseKey, value) {
+  scopeCandidates.forEach((s) => saveJSON(`${baseKey}_${s}`, value));
+}
+
+saveForAllScopes(CART_KEY, state.cart || []);
+if (state.address) saveForAllScopes(ADDRESS_KEY, state.address);
+if (state.profile) saveForAllScopes("fm_profile", state.profile);
 
 const refs = {
   navButtons: [...document.querySelectorAll(".nav-btn")],
@@ -101,6 +115,7 @@ async function fetchProducts() {
     })
     .filter((item) => item.qty > 0);
   saveJSON(CART_KEY_SCOPED, state.cart);
+  saveForAllScopes(CART_KEY, state.cart);
 }
 
 async function fetchOrders() {
@@ -154,6 +169,7 @@ function addToCart(productId) {
   }
   saveJSON(CART_KEY, state.cart);
   saveJSON(CART_KEY_SCOPED, state.cart);
+  saveForAllScopes(CART_KEY, state.cart);
   renderProducts();
   renderCart();
 }
@@ -169,6 +185,7 @@ function updateCart(productId, qty) {
     item.qty = Math.min(qty, product.stock);
   }
   saveJSON(CART_KEY_SCOPED, state.cart);
+  saveForAllScopes(CART_KEY, state.cart);
   renderProducts();
   renderCart();
 }
@@ -409,6 +426,7 @@ async function checkout() {
 
     state.cart = [];
     saveJSON(CART_KEY_SCOPED, state.cart);
+    saveForAllScopes(CART_KEY, state.cart);
     await fetchProducts();
     await fetchOrders();
     renderProducts();
@@ -437,6 +455,7 @@ refs.addressForm.addEventListener("submit", (e) => {
   state.address = Object.fromEntries(new FormData(refs.addressForm).entries());
   state.addressEditMode = false;
   saveJSON(ADDRESS_KEY_SCOPED, state.address);
+  saveForAllScopes(ADDRESS_KEY, state.address);
   renderAddress();
   alert("Address saved.");
 });
@@ -445,6 +464,7 @@ refs.profileForm.addEventListener("submit", (e) => {
   state.profile = Object.fromEntries(new FormData(refs.profileForm).entries());
   state.profileEditMode = false;
   saveJSON(PROFILE_KEY_SCOPED, state.profile);
+  saveForAllScopes("fm_profile", state.profile);
   renderProfile();
   alert("Profile saved.");
 });
