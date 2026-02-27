@@ -3,7 +3,9 @@ const AUTH_TOKEN_KEY = "fm_token";
 const AUTH_REFRESH_TOKEN_KEY = "fm_refresh_token";
 const AUTH_EXPIRES_AT_KEY = "fm_expires_at";
 const AUTH_USER_KEY = "fm_user";
-const API_BASE = "http://localhost:5000/api";
+//const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://<your-render-backend>.onrender.com/api";
+
 
 function setRole(role) {
   localStorage.setItem(AUTH_KEY, role);
