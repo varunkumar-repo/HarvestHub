@@ -1417,3 +1417,10 @@ input::placeholder {
 .customer-page .product-card .price-row .qty-controls {
   flex: 0 0 auto;
 }
+
+.customer-page .product-card .add-btn {
+  padding: 0.28rem 0.44rem;
+  font-size: 0.72rem;
+  min-width: 40px;
+  border-radius: 9px;
+}
