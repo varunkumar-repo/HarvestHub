@@ -480,6 +480,11 @@ document.addEventListener("click", (e) => {
 refs.addressForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const payload = Object.fromEntries(new FormData(refs.addressForm).entries());
+  state.address = payload;
+  state.addressEditMode = false;
+  saveJSON(ADDRESS_KEY_SCOPED, state.address);
+  saveForAllScopes(ADDRESS_KEY, state.address);
+  renderAddress();
   try {
     const response = await apiFetch("/auth/me/address", {
       method: "PUT",
@@ -500,12 +505,17 @@ refs.addressForm.addEventListener("submit", async (e) => {
     renderAddress();
     alert("Address saved.");
   } catch (error) {
-    alert(error.message || "Could not save address.");
+    alert(`${error.message || "Could not save address on server."} Saved locally on this device.`);
   }
 });
 refs.profileForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const payload = Object.fromEntries(new FormData(refs.profileForm).entries());
+  state.profile = payload;
+  state.profileEditMode = false;
+  saveJSON(PROFILE_KEY_SCOPED, state.profile);
+  saveForAllScopes("fm_profile", state.profile);
+  renderProfile();
   try {
     const response = await apiFetch("/auth/me/profile", {
       method: "PUT",
@@ -521,7 +531,7 @@ refs.profileForm.addEventListener("submit", async (e) => {
     renderProfile();
     alert("Profile saved.");
   } catch (error) {
-    alert(error.message || "Could not save profile.");
+    alert(`${error.message || "Could not save profile on server."} Saved locally on this device.`);
   }
 });
 refs.editProfileBtn.addEventListener("click", () => {
@@ -554,7 +564,11 @@ refs.logoutCustomer.addEventListener("click", () => {
 
 async function initCustomer() {
   try {
-    await syncCustomerProfileFromServer();
+    try {
+      await syncCustomerProfileFromServer();
+    } catch (error) {
+      console.warn("Profile sync failed:", error?.message || error);
+    }
     await fetchProducts();
     await fetchOrders();
     renderProducts();
