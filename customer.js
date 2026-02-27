@@ -146,7 +146,10 @@ function buildProductCard(p) {
   const node = refs.productCardTpl.content.firstElementChild.cloneNode(true);
   node.querySelector("img").src = p.image;
   node.querySelector("img").alt = p.name;
-  node.querySelector(".chip").textContent = `${p.category} | Stock ${p.stock}`;
+  const chip = node.querySelector(".chip");
+  const isLowStock = p.stock > 0 && p.stock < 20;
+  chip.textContent = isLowStock ? `${p.category} | Getting out of stock` : p.category;
+  chip.classList.toggle("low-stock", isLowStock);
   node.querySelector("h3").textContent = p.name;
   node.querySelector(".price").textContent = priceWithUnit(p);
   const btn = node.querySelector(".add-btn");
@@ -206,7 +209,9 @@ function renderGroupedProducts(products) {
       renderProducts();
     });
     block.appendChild(head);
-    block.appendChild(createProductsGrid(categoryProducts));
+    const carousel = createProductsGrid(categoryProducts);
+    carousel.classList.add("product-carousel");
+    block.appendChild(carousel);
     refs.productGrid.appendChild(block);
   });
 }
