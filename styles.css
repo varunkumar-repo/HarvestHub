@@ -756,8 +756,8 @@ input::placeholder {
 }
 
 .customer-page .product-grid {
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
 }
 
 .customer-page .product-card {
@@ -771,15 +771,16 @@ input::placeholder {
 }
 
 .customer-page .product-card img {
-  height: 165px;
+  height: 145px;
 }
 
 .customer-page .card-body {
-  padding: 0.85rem;
+  padding: 0.7rem;
 }
 
 .customer-page .card-body h3 {
   margin: 0.15rem 0 0.45rem;
+  font-size: 0.96rem;
   line-height: 1.3;
 }
 
