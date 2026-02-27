@@ -27,6 +27,7 @@ const refs = {
   productCardTpl: document.getElementById("productCardTpl"),
   searchInput: document.getElementById("searchInput"),
   categoryFilter: document.getElementById("categoryFilter"),
+  backFromCategoryBtn: document.getElementById("backFromCategoryBtn"),
   cartItems: document.getElementById("cartItems"),
   cartTotal: document.getElementById("cartTotal"),
   ordersList: document.getElementById("ordersList"),
@@ -184,6 +185,12 @@ function createProductsGrid(products) {
   return grid;
 }
 
+function renderCategoryBackButton() {
+  if (!refs.backFromCategoryBtn) return;
+  const activeCategory = refs.categoryFilter.value !== "all";
+  refs.backFromCategoryBtn.style.display = activeCategory ? "inline-flex" : "none";
+}
+
 function renderGroupedProducts(products) {
   const grouped = new Map();
   products.forEach((p) => {
@@ -218,6 +225,7 @@ function renderGroupedProducts(products) {
 
 function renderProducts() {
   refs.productGrid.innerHTML = "";
+  renderCategoryBackButton();
   const products = filteredProducts();
   if (!products.length) {
     refs.productGrid.innerHTML = "<p>No products found.</p>";
@@ -377,6 +385,11 @@ async function checkout() {
 refs.navButtons.forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
 refs.searchInput.addEventListener("input", renderProducts);
 refs.categoryFilter.addEventListener("change", renderProducts);
+refs.backFromCategoryBtn?.addEventListener("click", () => {
+  refs.categoryFilter.value = "all";
+  refs.searchInput.value = "";
+  renderProducts();
+});
 refs.checkoutBtn.addEventListener("click", checkout);
 refs.profileToggle.addEventListener("click", () => refs.profileMenu.classList.toggle("open"));
 document.addEventListener("click", (e) => {

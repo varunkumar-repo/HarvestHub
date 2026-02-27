@@ -449,7 +449,7 @@ input::placeholder {
 }
 
 .product-carousel .product-card {
-  flex: 0 0 158px;
+  flex: 0 0 178px;
   scroll-snap-align: start;
   height: auto;
 }
@@ -813,12 +813,12 @@ input::placeholder {
 }
 
 .customer-page .toolbar {
-  grid-template-columns: minmax(260px, 1fr) 220px;
+  grid-template-columns: minmax(260px, 1fr) 220px 90px;
   align-items: center;
 }
 
 .customer-page .product-grid {
-  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 0.55rem;
 }
 
@@ -826,6 +826,9 @@ input::placeholder {
   border: 1px solid #5d7a6f;
   border-radius: 15px;
   background: #263a33;
+  display: flex;
+  flex-direction: column;
+  min-height: 190px;
 }
 
 .customer-page .product-card:hover {
@@ -842,6 +845,9 @@ input::placeholder {
 
 .customer-page .card-body {
   padding: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .customer-page .card-body h3 {
@@ -868,6 +874,13 @@ input::placeholder {
 
 .customer-page .price {
   font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.customer-page .product-card .price-row {
+  margin-top: auto;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
 .customer-page .list-grid {
@@ -1097,7 +1110,7 @@ input::placeholder {
   }
 
   .product-carousel .product-card {
-    flex-basis: 145px;
+    flex-basis: 162px;
   }
 
   .customer-page .product-card .price-row .btn,
@@ -1279,7 +1292,7 @@ input::placeholder {
   }
 
   .product-carousel .product-card {
-    flex-basis: 132px;
+    flex-basis: 152px;
   }
 
   .customer-page .price-row {
