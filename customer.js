@@ -45,6 +45,7 @@ const state = {
   profile: loadFirstExistingJson(PROFILE_KEYS, null),
   view: "products",
   activeCategory: "all",
+  checkoutInProgress: false,
   profileEditMode: false,
   addressEditMode: false
 };
@@ -466,6 +467,7 @@ function renderProfile() {
 }
 
 async function checkout() {
+  if (state.checkoutInProgress) return;
   if (!state.address) {
     alert("Please save delivery address in Profile first.");
     return;
@@ -478,6 +480,11 @@ async function checkout() {
   const lines = state.cart
     .map((item) => ({ productId: item.productId, qty: item.qty }))
     .filter((item) => item.qty > 0);
+
+  state.checkoutInProgress = true;
+  refs.checkoutBtn.disabled = true;
+  const originalCheckoutText = refs.checkoutBtn.textContent;
+  refs.checkoutBtn.textContent = "Processing...";
 
   try {
     await apiFetch("/orders", {
@@ -501,6 +508,10 @@ async function checkout() {
     setView("orders");
   } catch (error) {
     alert(error.message || "Checkout failed.");
+  } finally {
+    state.checkoutInProgress = false;
+    refs.checkoutBtn.disabled = false;
+    refs.checkoutBtn.textContent = originalCheckoutText;
   }
 }
 
