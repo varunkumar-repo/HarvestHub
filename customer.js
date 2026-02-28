@@ -89,6 +89,12 @@ function currency(v) {
   return `Rs ${Number(v || 0).toFixed(0)}`;
 }
 
+function formatDateTime(value, fallback = "N/A") {
+  const parsed = Date.parse(value || "");
+  if (Number.isNaN(parsed)) return value || fallback;
+  return new Date(parsed).toLocaleString();
+}
+
 function priceWithUnit(product) {
   const unit = (product?.unit || "unit").trim();
   const rawUnit = unit.startsWith("/") ? unit.slice(1).trim() : unit;
@@ -125,8 +131,8 @@ async function fetchOrders() {
     .map((o) => ({
       id: o._id,
       placedAt: o.createdAt || "",
-      date: new Date(o.createdAt).toLocaleString(),
-      estimatedDelivery: o.estimatedDelivery || "N/A",
+      date: formatDateTime(o.createdAt),
+      estimatedDelivery: formatDateTime(o.estimatedDelivery),
       status: o.status || "placed",
       total: o.total || 0,
       lines: o.lines || []

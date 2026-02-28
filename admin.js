@@ -29,6 +29,12 @@ function currency(v) {
   return `Rs ${Number(v || 0).toFixed(0)}`;
 }
 
+function formatDateTime(value, fallback = "N/A") {
+  const parsed = Date.parse(value || "");
+  if (Number.isNaN(parsed)) return value || fallback;
+  return new Date(parsed).toLocaleString();
+}
+
 function unitOptionsHtml(selectedUnit) {
   const normalizedSelectedUnit = selectedUnit === "500 g" ? "500grams" : selectedUnit;
   const units = [
@@ -69,7 +75,7 @@ function fileToDataUrl(file) {
 }
 
 function getOrderTime(order) {
-  const parsed = Date.parse(order.date || "");
+  const parsed = Date.parse(order.placedAt || "");
   return Number.isNaN(parsed) ? 0 : parsed;
 }
 
@@ -92,8 +98,8 @@ async function fetchOrders() {
     .map((o) => ({
       id: o._id,
       placedAt: o.createdAt || "",
-      date: new Date(o.createdAt).toLocaleString(),
-      estimatedDelivery: o.estimatedDelivery || "N/A",
+      date: formatDateTime(o.createdAt),
+      estimatedDelivery: formatDateTime(o.estimatedDelivery),
       deliveryName: o.deliveryName || "N/A",
       deliveryContact: o.deliveryContact || "N/A",
       deliveryAddress: o.deliveryAddress || "N/A",

@@ -45,7 +45,7 @@ router.post("/", authRequired, async (req, res) => {
       deliveryName: deliveryName.trim(),
       deliveryContact: deliveryContact.trim(),
       deliveryAddress: deliveryAddress.trim(),
-      estimatedDelivery: new Date(Date.now() + 2 * 60 * 60 * 1000).toLocaleString(),
+      estimatedDelivery: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
       status: "placed"
     });
 
