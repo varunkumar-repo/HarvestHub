@@ -95,6 +95,18 @@ function formatDateTime(value, fallback = "N/A") {
   return new Date(parsed).toLocaleString();
 }
 
+function normalizedEstimatedDelivery(order) {
+  const placedMs = Date.parse(order?.createdAt || "");
+  const etaMs = Date.parse(order?.estimatedDelivery || "");
+  if (!Number.isNaN(etaMs) && (Number.isNaN(placedMs) || etaMs >= placedMs)) {
+    return new Date(etaMs).toLocaleString();
+  }
+  if (!Number.isNaN(placedMs)) {
+    return new Date(placedMs + 2 * 60 * 60 * 1000).toLocaleString();
+  }
+  return "N/A";
+}
+
 function priceWithUnit(product) {
   const unit = (product?.unit || "unit").trim();
   const rawUnit = unit.startsWith("/") ? unit.slice(1).trim() : unit;
@@ -132,7 +144,7 @@ async function fetchOrders() {
       id: o._id,
       placedAt: o.createdAt || "",
       date: formatDateTime(o.createdAt),
-      estimatedDelivery: formatDateTime(o.estimatedDelivery),
+      estimatedDelivery: normalizedEstimatedDelivery(o),
       status: o.status || "placed",
       total: o.total || 0,
       lines: o.lines || []

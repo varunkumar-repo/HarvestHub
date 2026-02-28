@@ -35,6 +35,18 @@ function formatDateTime(value, fallback = "N/A") {
   return new Date(parsed).toLocaleString();
 }
 
+function normalizedEstimatedDelivery(order) {
+  const placedMs = Date.parse(order?.createdAt || "");
+  const etaMs = Date.parse(order?.estimatedDelivery || "");
+  if (!Number.isNaN(etaMs) && (Number.isNaN(placedMs) || etaMs >= placedMs)) {
+    return new Date(etaMs).toLocaleString();
+  }
+  if (!Number.isNaN(placedMs)) {
+    return new Date(placedMs + 2 * 60 * 60 * 1000).toLocaleString();
+  }
+  return "N/A";
+}
+
 function unitOptionsHtml(selectedUnit) {
   const normalizedSelectedUnit = selectedUnit === "500 g" ? "500grams" : selectedUnit;
   const units = [
@@ -99,7 +111,7 @@ async function fetchOrders() {
       id: o._id,
       placedAt: o.createdAt || "",
       date: formatDateTime(o.createdAt),
-      estimatedDelivery: formatDateTime(o.estimatedDelivery),
+      estimatedDelivery: normalizedEstimatedDelivery(o),
       deliveryName: o.deliveryName || "N/A",
       deliveryContact: o.deliveryContact || "N/A",
       deliveryAddress: o.deliveryAddress || "N/A",
