@@ -87,15 +87,15 @@ h1, h2, h3, h4 {
 .view-card,
 .hero-farm {
   border: 1px solid var(--line);
-  background: linear-gradient(140deg, rgba(40, 56, 50, 0.9), rgba(30, 43, 38, 0.92));
+  background: linear-gradient(140deg, rgba(40, 56, 50, 0.95), rgba(30, 43, 38, 0.96));
   box-shadow: 0 16px 34px rgba(8, 18, 14, 0.4);
   border-radius: 16px;
 }
 
 .hero-card {
-  width: min(780px, 100%);
-  max-width: 780px;
-  padding: 2rem;
+  width: min(860px, 100%);
+  max-width: 860px;
+  padding: 2.4rem;
 }
 
 .tag {
@@ -381,7 +381,7 @@ input::placeholder {
 }
 
 .view-card {
-  padding: 1rem;
+  padding: 1.2rem;
   display: none;
 }
 
