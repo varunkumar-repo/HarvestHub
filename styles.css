@@ -1140,6 +1140,7 @@ input::placeholder {
     position: static;
     padding: 0.7rem 0.5rem;
     gap: 0.5rem;
+    margin-top: 0.35rem;
   }
 
   .customer-page .brandline {
@@ -1172,10 +1173,17 @@ input::placeholder {
 
   .customer-page #profileToggle {
     width: auto;
+    font-size: 0.7rem;
+    padding: 0.36rem 0.5rem;
   }
 
   .customer-page .toolbar {
     grid-template-columns: 1fr;
+  }
+
+  .customer-page #searchInput {
+    padding: 0.45rem 0.55rem;
+    font-size: 0.74rem;
   }
 
   .hero-farm {
