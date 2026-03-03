@@ -1143,7 +1143,8 @@ input::placeholder {
   }
 
   .customer-page .brandline {
-    width: 100%;
+    width: auto;
+    order: 1;
   }
 
   .customer-page .nav-links {
@@ -1151,6 +1152,7 @@ input::placeholder {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.45rem;
+    order: 3;
   }
 
   .customer-page .nav-links .nav-btn {
@@ -1161,11 +1163,12 @@ input::placeholder {
   }
 
   .customer-page .profile-wrap {
-    width: 100%;
+    width: auto;
+    order: 2;
   }
 
   .customer-page #profileToggle {
-    width: 100%;
+    width: auto;
   }
 
   .customer-page .toolbar {
