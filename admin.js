@@ -28,7 +28,8 @@ const refs = {
   metricDelivered: document.getElementById("metricDelivered"),
   metricPending: document.getElementById("metricPending"),
   metricLowStock: document.getElementById("metricLowStock"),
-  metricProducts: document.getElementById("metricProducts")
+  metricProducts: document.getElementById("metricProducts"),
+  lowStockList: document.getElementById("lowStockList")
 };
 
 function currency(v) {
@@ -154,6 +155,27 @@ function renderAnalytics() {
   if (refs.metricPending) refs.metricPending.textContent = `${pendingCount}`;
   if (refs.metricLowStock) refs.metricLowStock.textContent = `${lowStockCount}`;
   if (refs.metricProducts) refs.metricProducts.textContent = `${productCount}`;
+
+  if (refs.lowStockList) {
+    const lowStockItems = state.products
+      .filter((p) => Number(p.stock || 0) > 0 && Number(p.stock || 0) < 20)
+      .sort((a, b) => Number(a.stock || 0) - Number(b.stock || 0));
+    if (!lowStockItems.length) {
+      refs.lowStockList.innerHTML = "<p>No low stock products.</p>";
+    } else {
+      refs.lowStockList.innerHTML = lowStockItems.map((p) => `
+        <div class="item-card">
+          <div>
+            <strong>${p.name}</strong>
+            <p>${p.category}</p>
+          </div>
+          <div class="order-actions">
+            <strong>${p.stock}</strong>
+          </div>
+        </div>
+      `).join("");
+    }
+  }
 }
 
 function renderTable() {

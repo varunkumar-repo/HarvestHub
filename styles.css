@@ -180,37 +180,6 @@ input::placeholder {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.52);
-  position: relative;
-}
-
-@keyframes floaty {
-  0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-  50% { transform: translateY(-10px) rotate(6deg); opacity: 1; }
-  100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-}
-
-.auth-shell::before,
-.auth-shell::after {
-  content: "";
-  position: absolute;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: radial-gradient(circle at 30% 30%, #7ef2b7, #2f7d55);
-  opacity: 0.8;
-  z-index: 1;
-  animation: floaty 4.5s ease-in-out infinite;
-}
-
-.auth-shell::before {
-  top: -12px;
-  left: -12px;
-}
-
-.auth-shell::after {
-  bottom: -12px;
-  right: -12px;
-  animation-delay: 1.2s;
 }
 
 .auth-card {
