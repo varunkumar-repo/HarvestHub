@@ -180,6 +180,37 @@ input::placeholder {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.52);
+  position: relative;
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+  50% { transform: translateY(-10px) rotate(6deg); opacity: 1; }
+  100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+}
+
+.auth-shell::before,
+.auth-shell::after {
+  content: "";
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: radial-gradient(circle at 30% 30%, #7ef2b7, #2f7d55);
+  opacity: 0.8;
+  z-index: 1;
+  animation: floaty 4.5s ease-in-out infinite;
+}
+
+.auth-shell::before {
+  top: -12px;
+  left: -12px;
+}
+
+.auth-shell::after {
+  bottom: -12px;
+  right: -12px;
+  animation-delay: 1.2s;
 }
 
 .auth-card {
@@ -677,6 +708,32 @@ input::placeholder {
   flex-wrap: wrap;
 }
 
+.admin-analytics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem;
+}
+
+.metric-card {
+  border: 1px solid #4f6a5f;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(34, 52, 45, 0.94), rgba(28, 43, 37, 0.96));
+  padding: 0.7rem;
+}
+
+.metric-card p {
+  margin: 0 0 0.3rem;
+  color: #c9d8d1;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.metric-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #f2fff8;
+}
+
 .order-filters {
   display: grid;
   grid-template-columns: 1fr 1fr auto 1fr auto;
@@ -1097,6 +1154,10 @@ input::placeholder {
 
   .admin-tabs .nav-btn {
     flex: 1 1 calc(50% - 0.5rem);
+  }
+
+  .admin-analytics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

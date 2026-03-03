@@ -22,7 +22,13 @@ const refs = {
   filterMonthBtn: document.getElementById("filterMonthBtn"),
   adminRecentOrdersList: document.getElementById("adminRecentOrdersList"),
   adminPastOrdersList: document.getElementById("adminPastOrdersList"),
-  logoutAdmin: document.getElementById("logoutAdmin")
+  logoutAdmin: document.getElementById("logoutAdmin"),
+  metricTotalOrders: document.getElementById("metricTotalOrders"),
+  metricTotalRevenue: document.getElementById("metricTotalRevenue"),
+  metricDelivered: document.getElementById("metricDelivered"),
+  metricPending: document.getElementById("metricPending"),
+  metricLowStock: document.getElementById("metricLowStock"),
+  metricProducts: document.getElementById("metricProducts")
 };
 
 function currency(v) {
@@ -102,6 +108,7 @@ function deliveredOrders() {
 async function fetchProducts() {
   const data = await apiFetch("/products");
   state.products = data.map((p) => ({ ...p, id: p._id }));
+  renderAnalytics();
 }
 
 async function fetchOrders() {
@@ -120,6 +127,7 @@ async function fetchOrders() {
       lines: o.lines || []
     }))
     .sort((a, b) => Date.parse(b.placedAt) - Date.parse(a.placedAt));
+  renderAnalytics();
 }
 
 function filteredProducts() {
@@ -130,6 +138,22 @@ function filteredProducts() {
     const byCategory = category === "all" || p.category === category;
     return byText && byCategory;
   });
+}
+
+function renderAnalytics() {
+  const totalOrders = state.orders.length;
+  const totalRevenue = state.orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+  const deliveredCount = state.orders.filter((o) => o.status === "delivered").length;
+  const pendingCount = state.orders.filter((o) => o.status !== "delivered").length;
+  const lowStockCount = state.products.filter((p) => Number(p.stock || 0) > 0 && Number(p.stock || 0) < 20).length;
+  const productCount = state.products.length;
+
+  if (refs.metricTotalOrders) refs.metricTotalOrders.textContent = `${totalOrders}`;
+  if (refs.metricTotalRevenue) refs.metricTotalRevenue.textContent = currency(totalRevenue);
+  if (refs.metricDelivered) refs.metricDelivered.textContent = `${deliveredCount}`;
+  if (refs.metricPending) refs.metricPending.textContent = `${pendingCount}`;
+  if (refs.metricLowStock) refs.metricLowStock.textContent = `${lowStockCount}`;
+  if (refs.metricProducts) refs.metricProducts.textContent = `${productCount}`;
 }
 
 function renderTable() {
