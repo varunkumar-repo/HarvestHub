@@ -1144,7 +1144,8 @@ input::placeholder {
 
   .customer-page .brandline {
     width: auto;
-    order: 1;
+    order: 2;
+    margin-left: auto;
   }
 
   .customer-page .nav-links {
@@ -1160,12 +1161,12 @@ input::placeholder {
     width: 100%;
     min-width: 0;
     padding: 0.5rem 0.35rem;
-    font-size: 0.84rem;
+    font-size: 0.9rem;
   }
 
   .customer-page .profile-wrap {
     width: auto;
-    order: 2;
+    order: 1;
   }
 
   .customer-page #profileToggle {
@@ -1196,6 +1197,22 @@ input::placeholder {
     position: static;
     width: 100%;
     margin-top: 0.5rem;
+  }
+
+  .customer-page .profile-wrap {
+    width: auto;
+  }
+
+  .customer-page #profileToggle {
+    width: auto;
+  }
+
+  .customer-page .profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: min(320px, calc(100vw - 24px));
+    margin-top: 0;
   }
 
   .product-grid {
