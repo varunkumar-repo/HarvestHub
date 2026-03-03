@@ -377,11 +377,24 @@ refs.productForm.addEventListener("submit", async (e) => {
     alert("Please upload a product image.");
     return;
   }
-  let imageDataUrl = "";
+  let imageUrl = "";
   try {
-    imageDataUrl = await fileToDataUrl(imageFile);
-  } catch {
-    alert("Could not process the uploaded image.");
+    const uploadForm = new FormData();
+    uploadForm.append("image", imageFile);
+    const response = await fetch(`${API_BASE}/uploads`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      },
+      body: uploadForm
+    });
+    const payload = await response.json();
+    if (!response.ok || !payload?.imageUrl) {
+      throw new Error(payload?.message || "Image upload failed.");
+    }
+    imageUrl = payload.imageUrl;
+  } catch (error) {
+    alert(error.message || "Could not upload image.");
     return;
   }
 
@@ -394,7 +407,7 @@ refs.productForm.addEventListener("submit", async (e) => {
         unit: data.unit.trim(),
         price: Number(data.price),
         stock: Number(data.stock),
-        image: imageDataUrl
+        image: imageUrl
       })
     });
     refs.productForm.reset();
