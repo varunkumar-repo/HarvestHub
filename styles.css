@@ -657,6 +657,10 @@ input::placeholder {
   align-items: center;
 }
 
+#checkoutBtn {
+  margin-bottom: 0.5rem;
+}
+
 .summary {
   margin-top: 0.8rem;
   font-weight: 800;
@@ -1357,22 +1361,19 @@ input::placeholder {
   }
 
   .customer-page .nav-links {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.3rem;
-    overflow-x: auto;
-    padding: 0.2rem 0.25rem;
-    border-radius: 999px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.25rem;
+    background: rgba(30, 45, 40, 0.85);
+    padding: 0.2rem;
+    border-radius: 12px;
     border: 1px solid #4f6a5f;
-    background: rgba(26, 40, 35, 0.9);
   }
 
   .customer-page .nav-links .nav-btn {
     font-size: 0.6rem;
-    padding: 0.28rem 0.6rem;
+    padding: 0.28rem 0.16rem;
     line-height: 1.1;
-    border-radius: 999px;
-    white-space: nowrap;
+    border-radius: 10px;
   }
 
   .customer-page #profileToggle {
