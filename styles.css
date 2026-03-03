@@ -1307,12 +1307,12 @@ input::placeholder {
 
 @media (max-width: 520px) {
   h1 {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     line-height: 1.25;
   }
 
   h2 {
-    font-size: 1.15rem;
+    font-size: 1rem;
     line-height: 1.25;
   }
 
@@ -1358,22 +1358,27 @@ input::placeholder {
 
   .customer-page .nav-links {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.3rem;
+    gap: 0.2rem;
+    background: rgba(30, 45, 40, 0.85);
+    padding: 0.2rem;
+    border-radius: 12px;
+    border: 1px solid #4f6a5f;
   }
 
   .customer-page .nav-links .nav-btn {
-    font-size: 0.72rem;
-    padding: 0.4rem 0.2rem;
+    font-size: 0.6rem;
+    padding: 0.28rem 0.16rem;
     line-height: 1.1;
+    border-radius: 10px;
   }
 
   .customer-page #profileToggle {
-    font-size: 0.72rem;
-    padding: 0.4rem 0.35rem;
+    font-size: 0.6rem;
+    padding: 0.28rem 0.26rem;
   }
 
   .customer-page .hero-farm h1 {
-    font-size: 1.22rem;
+    font-size: 1.05rem;
   }
 
   .customer-page .card-body {
@@ -1381,26 +1386,26 @@ input::placeholder {
   }
 
   .customer-page .card-body h3 {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     margin: 0.1rem 0 0.3rem;
-    min-height: 1.8em;
+    min-height: 1.6em;
   }
 
   .customer-page .chip {
-    font-size: 0.54rem;
+    font-size: 0.5rem;
     margin-bottom: 0.15rem;
   }
 
   .customer-page .price {
-    font-size: 0.7rem;
+    font-size: 0.62rem;
   }
 
   .customer-page .product-card img {
-    height: 92px;
+    height: 80px;
   }
 
   .product-carousel .product-card {
-    flex-basis: 160px;
+    flex-basis: 140px;
   }
 
   .customer-page .price-row {
@@ -1408,8 +1413,8 @@ input::placeholder {
   }
 
   .customer-page .price-row .btn {
-    padding: 0.4rem 0.35rem;
-    font-size: 0.8rem;
+    padding: 0.28rem 0.3rem;
+    font-size: 0.7rem;
   }
 
   .customer-page .price-row .btn,
@@ -1418,13 +1423,13 @@ input::placeholder {
   }
 
   .customer-page .qty-controls .btn {
-    min-width: 24px;
-    padding: 0.2rem 0.25rem;
-    font-size: 0.78rem;
+    min-width: 20px;
+    padding: 0.16rem 0.2rem;
+    font-size: 0.68rem;
   }
 
   .customer-page #cartView .cart-item {
-    padding: 0.54rem 0.6rem;
+    padding: 0.4rem 0.46rem;
   }
 
   .customer-page #cartView .cart-meta {
@@ -1433,7 +1438,7 @@ input::placeholder {
   }
 
   .customer-page #cartView .cart-meta h4 {
-    font-size: 0.88rem;
+    font-size: 0.76rem;
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -1441,7 +1446,7 @@ input::placeholder {
   }
 
   .customer-page #cartView .cart-meta p {
-    font-size: 0.76rem;
+    font-size: 0.62rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1454,20 +1459,38 @@ input::placeholder {
   }
 
   .customer-page #cartView .cart-controls .btn {
-    min-width: 24px;
-    padding: 0.2rem 0.3rem;
-    font-size: 0.72rem;
+    min-width: 20px;
+    padding: 0.14rem 0.2rem;
+    font-size: 0.6rem;
     width: auto;
   }
 
   .customer-page #cartView .cart-controls .del {
-    min-width: 52px;
+    min-width: 40px;
   }
 
   .customer-page #cartView .cart-qty {
-    min-width: 18px;
-    font-size: 0.72rem;
-    padding: 0.12rem 0.2rem;
+    min-width: 14px;
+    font-size: 0.6rem;
+    padding: 0.08rem 0.14rem;
+  }
+
+  .customer-page #ordersView .item-card {
+    padding: 0.45rem 0.5rem;
+  }
+
+  .customer-page #ordersView .item-card h4 {
+    font-size: 0.78rem;
+  }
+
+  .customer-page #ordersView .item-card p {
+    font-size: 0.62rem;
+    margin: 0.12rem 0;
+  }
+
+  .customer-page #ordersView .order-status-chip {
+    font-size: 0.6rem;
+    padding: 0.08rem 0.35rem;
   }
 
   .price-row {
