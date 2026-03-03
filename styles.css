@@ -1144,8 +1144,8 @@ input::placeholder {
 
   .customer-page .brandline {
     width: auto;
-    order: 2;
-    margin-left: auto;
+    order: 1;
+    margin-left: 0.35rem;
   }
 
   .customer-page .nav-links {
@@ -1166,7 +1166,8 @@ input::placeholder {
 
   .customer-page .profile-wrap {
     width: auto;
-    order: 1;
+    order: 2;
+    margin-right: 0.35rem;
   }
 
   .customer-page #profileToggle {
