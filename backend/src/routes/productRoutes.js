@@ -15,8 +15,15 @@ router.post("/", authRequired, requireRole("admin"), async (req, res) => {
     if (!name || !category || !unit || !image || price == null || stock == null) {
       return res.status(400).json({ message: "name, category, unit, price, stock and image are required." });
     }
+    const normalizedName = name.trim();
+    const existing = await Product.findOne({
+      name: { $regex: `^${normalizedName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, $options: "i" }
+    });
+    if (existing) {
+      return res.status(409).json({ message: "Product name already exists." });
+    }
     const created = await Product.create({
-      name: name.trim(),
+      name: normalizedName,
       category: category.trim(),
       unit: unit.trim(),
       price: Number(price),

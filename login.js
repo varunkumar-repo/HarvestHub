@@ -2,6 +2,7 @@ const customerForm = document.getElementById("customerLoginForm");
 const customerRegisterForm = document.getElementById("customerRegisterForm");
 const forgotPasswordForm = document.getElementById("forgotPasswordForm");
 const adminForm = document.getElementById("adminLoginForm");
+const CART_KEY = "fm_cart";
 
 function isStrongPassword(password) {
   return (
@@ -42,6 +43,16 @@ function cacheCustomerProfile(user) {
   });
 }
 
+function clearCustomerCartForUser(user) {
+  if (!user) return;
+  const scopes = userScopeCandidates(user);
+  scopes.forEach((scope) => {
+    localStorage.removeItem(`${CART_KEY}_${scope}`);
+  });
+  localStorage.removeItem(CART_KEY);
+  localStorage.removeItem(`${CART_KEY}_guest`);
+}
+
 
 if (customerForm) {
   customerForm.addEventListener("submit", async (e) => {
@@ -56,6 +67,7 @@ if (customerForm) {
       });
       setSession(payload.accessToken, payload.user, payload.refreshToken, payload.expiresIn);
       cacheCustomerProfile(payload.user);
+      clearCustomerCartForUser(payload.user);
       window.location.href = "customer.html";
     } catch (error) {
       alert(error.message || "Invalid customer credentials.");
