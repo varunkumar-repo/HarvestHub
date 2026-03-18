@@ -1738,3 +1738,17 @@ input::placeholder {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 720px) {
+  .profile-menu {
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(320px, 92vw);
+    max-height: 70vh;
+    overflow: auto;
+    z-index: 9999;
+  }
+}
