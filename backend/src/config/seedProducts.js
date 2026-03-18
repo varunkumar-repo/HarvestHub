@@ -15,7 +15,9 @@ const SEEDED_PRODUCTS = [
 ];
 
 export async function seedProducts() {
-  const count = await Product.countDocuments();
-  if (count > 0) return;
-  await Product.insertMany(SEEDED_PRODUCTS);
+  for (const product of SEEDED_PRODUCTS) {
+    const existing = await Product.findOne({ image: product.image });
+    if (existing) continue;
+    await Product.create(product);
+  }
 }
