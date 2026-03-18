@@ -305,6 +305,15 @@ input::placeholder {
 }
 
 .profile-menu.open {
+  z-index: 1000;
+}
+
+.hero-farm {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-menu.open {
   display: block;
 }
 

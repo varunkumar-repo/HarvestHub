@@ -64,6 +64,7 @@ const refs = {
   cartView: document.getElementById("cartView"),
   ordersView: document.getElementById("ordersView"),
   customerHero: document.getElementById("customerHero"),
+  contactStrip: document.getElementById("contactStrip"),
   productGrid: document.getElementById("productGrid"),
   productCardTpl: document.getElementById("productCardTpl"),
   searchInput: document.getElementById("searchInput"),
@@ -193,6 +194,9 @@ function setView(view) {
   refs.cartView.classList.toggle("visible", view === "cart");
   refs.ordersView.classList.toggle("visible", view === "orders");
   refs.customerHero.style.display = view === "products" ? "grid" : "none";
+  if (refs.contactStrip) {
+    refs.contactStrip.style.display = view === "products" ? "block" : "none";
+  }
 }
 
 function filteredProducts() {
