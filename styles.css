@@ -1748,9 +1748,10 @@ input::placeholder {
   .profile-menu {
     position: fixed;
     top: 64px;
-    right: 8px;
-    left: 8px;
-    width: auto;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(320px, 92vw);
     max-height: 70vh;
     overflow: auto;
     z-index: 9999;
